@@ -32,6 +32,11 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const rawBody = (await buffer(req)).toString()
+
+  if(!rawBody) {
+    return res.status(401).end('invalid request signature');
+  }
+
   const data = JSON.parse(rawBody)
 
   console.log(req.headers)
