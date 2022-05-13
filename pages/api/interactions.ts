@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import nacl from 'tweetnacl'
 import { buffer } from 'micro'
+import { ifError } from 'assert';
 
 type DiscordRequest = {
   type: number;
@@ -61,13 +62,20 @@ export default async function handler(
     return res.status(401).end('invalid request signature');
   }
 
-  if(data.member) {
+  if(data.type != 1) {
     const nick = data.member.nick;
     const nickLol = data.data.options[0].value;
-    return res.status(200).json({ nick, nickLol })
+    return res.status(200).json({ 
+      type: 4,
+      data: {
+        "content": `Nick: ${nick} | Nick Lol: ${nickLol}`,
+      }
+     });
   }
 
-  return res.status(200).json({type: 1});
+  if(data.type == 1) {
+    return res.status(200).json({type: 1});
+  }
 }
 
 export const config = {
