@@ -35,6 +35,11 @@ export default async function handler(
   const signature = req.headers['x-kc-signature']?.toString()
   const timestamp = req.headers['X-Signature-Timestamp']?.toString()
 
+  console.log(rawBody)
+  console.log(data)
+  console.log(signature)
+  console.log(timestamp)
+
   if(!signature || !process.env.PUBLIC_API_KEY) {
     return res.status(401).end('invalid request signature');
   }
