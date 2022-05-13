@@ -1,13 +1,37 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+type DiscordRequest = {
+  type: number;
+  token: string;
+  member: {
+    user: {
+      id: string;
+      username: string;
+    },
+    nick: string | undefined;
+  },
+  data: {
+    options: {
+      name: string;
+      value: string;
+    }[],
+    name: string;
+  }
+}
+
 type Data = {
-  name: string
+  nick: string;
+  nickLol: string;
 }
 
 export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
+  request: NextApiRequest,
+  response: NextApiResponse<Data>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  const data = request.body;
+
+  const nick = data.member.nick;
+  const nickLol = data.data.options[0].value;
+
+  response.status(200).json({ nick, nickLol })
 }
