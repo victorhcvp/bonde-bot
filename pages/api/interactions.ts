@@ -22,8 +22,9 @@ type DiscordRequest = {
 }
 
 type Data = {
-  nick: string;
-  nickLol: string;
+  nick?: string;
+  nickLol?: string;
+  ok?: boolean;
 }
 
 export default async function handler(
@@ -61,10 +62,13 @@ export default async function handler(
     return res.status(401).end('invalid request signature');
   }
 
-  const nick = data.member.nick;
-  const nickLol = data.data.options[0].value;
+  if(data.member) {
+    const nick = data.member.nick;
+    const nickLol = data.data.options[0].value;
+    return res.status(200).json({ nick, nickLol })
+  }
 
-  return res.status(200).json({ nick, nickLol })
+  return res.status(200).json({ok: true});
 }
 
 export const config = {
