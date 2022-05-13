@@ -32,8 +32,8 @@ export default async function handler(
 ) {
   const rawBody = (await buffer(req)).toString()
   const data = JSON.parse(rawBody)
-  const signature = req.headers['x-kc-signature']?.toString()
-  const timestamp = req.headers['X-Signature-Timestamp']?.toString()
+  const signature = req.headers['X-Signature-Ed25519']?.toString()
+  const timestamp = req.headers['X-Signature-Timestamp']
 
   console.log(rawBody)
   console.log(data)
