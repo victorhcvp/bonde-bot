@@ -21,15 +21,9 @@ type DiscordRequest = {
   }
 }
 
-type Data = {
-  nick?: string;
-  nickLol?: string;
-  ok?: boolean;
-}
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const rawBody = (await buffer(req)).toString()
 
@@ -73,7 +67,7 @@ export default async function handler(
     return res.status(200).json({ nick, nickLol })
   }
 
-  return res.status(200).json({ok: true});
+  return res.status(200).json({data});
 }
 
 export const config = {
