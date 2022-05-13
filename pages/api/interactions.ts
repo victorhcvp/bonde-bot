@@ -95,7 +95,7 @@ export default async function handler(
   const riotUrl = 'https://br1.api.riotgames.com/lol';
 
   if(data.type != 1 && data.member && data.data.options) {
-    const nick = data.member.nick;
+    const nick = data.member.nick || data.member.user.username;
     const nickLol = data.data.options[0].value;
 
     const riotRes = await axios.get(`${riotUrl}/summoner/v4/summoners/by-name/${nickLol}`, {
