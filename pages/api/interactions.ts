@@ -32,8 +32,11 @@ export default async function handler(
 ) {
   const rawBody = (await buffer(req)).toString()
   const data = JSON.parse(rawBody)
-  const signature = req.headers['X-Signature-Ed25519']?.toString()
-  const timestamp = req.headers['X-Signature-Timestamp']
+
+  console.log(req.headers)
+
+  const signature = req.headers['x-signature-ed25519']?.toString()
+  const timestamp = req.headers['x-signature-timestamp']
 
   console.log(rawBody)
   console.log(data)
@@ -44,13 +47,17 @@ export default async function handler(
     return res.status(401).end('invalid request signature');
   }
 
-  const isVerified = nacl.sign.detached.verify(
-    Buffer.from(timestamp + rawBody),
-    Buffer.from(signature, 'hex'),
-    Buffer.from(process.env.PUBLIC_API_KEY, 'hex')
-  )
+  try {
+    const isVerified = nacl.sign.detached.verify(
+      Buffer.from(timestamp + rawBody),
+      Buffer.from(signature, 'hex'),
+      Buffer.from(process.env.PUBLIC_API_KEY, 'hex')
+    )
 
-  if(!isVerified) {
+    if(!isVerified) {
+      return res.status(401).end('invalid request signature');
+    }
+  } catch (err) {
     return res.status(401).end('invalid request signature');
   }
 
