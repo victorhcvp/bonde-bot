@@ -119,10 +119,12 @@ export default async function handler(
 
     if(leagueData.length > 0) {
       leagueData.forEach((league) => {
+        const winRate = ((league.wins / (league.wins + league.losses)) * 100).toFixed(2);
+
         message += `\`\`\``;
         message += `Queue: ${league.queueType.replace(/[_]+/g, ' ')}\n`;
         message += `Elo: ${league.tier} ${league.rank} | ${league.leaguePoints} LP\n`;
-        message += `Wins: ${league.wins} | Losses: ${league.losses}\n`;
+        message += `Wins: ${league.wins} | Losses: ${league.losses} | Win Rate: ${winRate}%\n`;
         message += `Veteran: ${league.veteran} | Inactive: ${league.inactive} | Hot Streak: ${league.hotStreak} | Fresh Blood: ${league.freshBlood}`;
         message += `\`\`\` \n`;
       });
