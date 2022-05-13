@@ -67,7 +67,7 @@ export default async function handler(
     return res.status(200).json({ nick, nickLol })
   }
 
-  return res.status(200).json(rawBody);
+  return res.status(200).json({type: 1});
 }
 
 export const config = {
